@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>canvas玩转红包照片</title>
+	<meta name="viewport"
+		  content = "height = device-height,
+		  			width = device-width,
+		  			initial-scale = 1.0,   
+		  			minimum-scale =1.0,
+		  			maximum-scale = 1.0,
+		  			user-scalable = no"/>
+		  			
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<div id="blur-div">
+		<img src="img/bg.jpg" id="blur-image">
+		<canvas id="canvas">
+		</canvas>
+		<a href="javascript:reset()" class="button" id="reset-btn">RESET</a>
+		<a href="javascript:show()" class="button" id="show-btn">SHOW</a>
+		
+	</div>
+	<script type="text/javascript" src="js/blur.js"></script>
+</body>
+</html>
