@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		
+<center>
+	
+	<canvas id="can" style="margin-top:10px;background-color:#eee;" width="600px" height="500px"></canvas>
+
+	</center>
+<script src="./h5lock.js"></script>
+<script>
+new h5lock("can",call);
+function call(str){
+    if(str=="12589"){
+        location.href="http://baidu.com"
+    }else{
+		alert("错误!");
+	}
+}
+</script>
