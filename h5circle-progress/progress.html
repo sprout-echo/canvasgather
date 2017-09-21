@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>进度水晶球</title>
+        <meta name="viewport" content="width=device-width"/>
+        <style>
+            h4{text-align: center;border-bottom: 1px solid #ddd;padding-bottom: 10px;}
+            #circle{display: block;margin:10px auto;}
+            #control{display: block;margin:10px auto;}
+            #control::before{color: #222;content:attr(min);}
+            #control::after{color:#222;content:attr(max);}
+        </style>
+    </head>
+    <body>
+        <h4>canvas制作球形水晶球进度条</h4>
+        <canvas id="circle"></canvas>
+        <input type="range" id="control" min="0" max="100" step="1"/>
+    </body>
+    <script>
+        var canvas = document.getElementById('circle');
+        var ctx = canvas.getContext('2d');
+        var range = document.getElementById('control');
+
+        //range控件信息
+        var rangeValue = range.value;
+        var nowRange = 0;
+
+        //画布信息
+        var tempW = canvas.width = 250;
+        var tempH = canvas.height = 250;
+        var lineWidth = 2;
+
+        var centre = tempW/2; //圆心
+        var r = centre - 16*lineWidth;   //半径
+
+        //sin曲线
+        var sX = 0;
+        var sY = tempW/2;
+        var axisLength = tempW;  //轴长
+        var waveWidth = 0.015;   //波浪宽度，数越小越宽
+        var waveHeight = 10;  //波浪高度
+        var speed = 0.09;
+        var xoffset = 0;  //波浪x偏移量
+
+        ctx.lineWidth = lineWidth;
+
+        //画圈
+        var IsdrawCircled = false;
+        var drawCircle = function(){
+            ctx.beginPath();
+            ctx.strokeStyle = "#12a89f";
+            ctx.arc(centre,centre,r+5,0,2*Math.PI);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(centre,centre,r,0,2*Math.PI);
+            ctx.clip();   //裁剪
+        }
+
+        //百分比文字
+        var drawText = function(){
+            //ctx.save();
+            var size = 0.4*r;
+            ctx.font = size + 'px Microsoft Yahei';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = "rgba(32,99,95,0.8)";
+            ctx.fillText(nowRange +'%',centre,centre+size/2);
+            ctx.stroke();
+        }
+
+        //画sin曲线
+        var drawSin = function(xoffset){
+            //ctx.save();
+            var points = [];   //存放绘制sin曲线的点
+            ctx.beginPath();
+
+            for(var x = sX;x<sX+axisLength;x+=1){
+                var y = Math.sin((sX+x)*waveWidth+xoffset);
+                var dY = tempW*(1-nowRange/100);
+
+                points.push([x,dY+y*waveHeight]);
+                ctx.lineTo(x,dY+y*waveHeight);
+            }
+
+            ctx.lineTo(axisLength,tempH);
+            ctx.lineTo(sX,tempH);
+            ctx.lineTo(points[0][0],points[0][1]);
+            ctx.fillStyle = "#12a89f";
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        var render = function(){
+            ctx.clearRect(0,0,tempW,tempH);
+
+            rangeValue = range.value;
+            if(IsdrawCircled == false){
+                drawCircle();
+            }
+            if(nowRange <= rangeValue){
+                var tmp = 1;
+                nowRange += tmp;
+            }
+            if(nowRange > rangeValue){
+                var tmp = 1;
+                nowRange -=tmp;
+            }
+
+            drawSin(xoffset);
+            drawText();
+            xoffset += speed;
+            requestAnimationFrame(render);
+
+        }
+
+        render();
+    </script>
+</html>
