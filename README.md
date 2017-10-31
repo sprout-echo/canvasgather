@@ -8,3 +8,4 @@
     适用于移动端
 ### h5circle-progress
     是一个水晶球的进度条，主要是用sin函数实现
+    progress2.js是对progress.html中的js代码进行jquery插件的封装，可以方便复用和修改各种参数
